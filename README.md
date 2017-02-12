@@ -13,4 +13,4 @@ To plot data, uncomment the commented out code in train.py meant for plotting.
 
 #Results
 predict path for projectile shot at an angle of 45 degrees and velocity of 10m/s
-  The results will be saved in result_lin_reg.csv, result_lin_reg_log.csv, result_lstm.csv for respective models.
+  The results will be saved in result_lin_reg.csv, result_lin_reg_log.csv, result_lstm.csv for respective models. Training insights are discussed in Report.pdf
