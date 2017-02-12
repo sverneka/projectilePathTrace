@@ -18,7 +18,11 @@ class LossHistory(Callback):
 	def on_train_begin(self, logs={}):
 		self.best_epoch = None
 		self.min_loss = 100000
+		self.train_loss = []
+		self.val_loss = []
 	def on_epoch_end(self, epoch, logs={}):
+		self.train_loss.append(logs.get('loss'))
+		self.val_loss.append(logs.get('val_loss'))
 		if self.min_loss > logs.get('val_loss'):
 			self.min_loss = logs.get('val_loss')
 			self.best_epoch = epoch
@@ -44,7 +48,13 @@ def train_val_split(X):
 	y_val_2 = X[ind_val_2, -1]
 	return (x_1, x_val_1, y_1, y_val_1, x_2, x_val_2, y_2, y_val_2)
 
-
+def plot_history(history):
+	f, ax = plt.subplots()
+	ax.set_title('Plot of train_loss vs validation_loss')
+	ax.plot(history.train_loss, 'go-', label='line 1')
+	ax.plot(history.val_loss, 'rs',  label='line 2')
+	#plt.set_title('Plot of train_loss vs validation_loss')
+	plt.show()
 
 
 #load projectiles.csv
@@ -104,9 +114,12 @@ batch_size = 10
 model1.fit(x_1, y_1, nb_epoch=500, batch_size=batch_size, validation_data=(x_val_1, y_val_1), shuffle=True, callbacks=[early_stopping, history])
 
 print "Minimum validation loss is - mean square error: ", history.min_loss
-
 w_m1 = 1-(pow(history.min_loss, 0.5)/np.mean(y_val_1))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_1) 
+
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model1 = Sequential()
@@ -140,7 +153,9 @@ model2.fit(x_2, y_2, nb_epoch=500, batch_size=batch_size, validation_data=(x_val
 print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m2 = 1-(pow(history.min_loss, 0.5)/np.mean(y_val_2))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_2) 
-
+"""
+plot_history(history)
+"""
 #get the best epoch and re run training on entire data
 model2 = Sequential()
 model2.add(Dense(1, input_dim=x_1.shape[1], activation='linear'))
@@ -202,6 +217,10 @@ print "Minimum validation loss is - mean square error: ",  np.mean(pow(y_val_pre
 w_m1 = 1- (pow( np.mean(pow(y_val_pred - y_val_actual,2)) , 0.5)/np.mean(y_val_actual))
 print "RMSE percent of mean of output: ", pow( np.mean(pow(y_val_pred - y_val_actual,2)) , 0.5)*100/np.mean(y_val_actual) 
 
+"""
+plot_history(history)
+"""
+
 #get the best epoch and re run training on entire data
 model1 = Sequential()
 model1.add(Dense(1, input_dim=x_1.shape[1], activation='linear'))
@@ -238,6 +257,10 @@ y_val_actual = pow(math.e, y_val_2)
 print "Minimum validation loss is - mean square error: ",  np.mean(pow(y_val_pred - y_val_actual,2)) 
 w_m2 = 1 - (pow( np.mean(pow(y_val_pred - y_val_actual,2)) , 0.5)/np.mean(y_val_actual))
 print "RMSE percent of mean of output: ", pow( np.mean(pow(y_val_pred - y_val_actual,2)) , 0.5)*100/np.mean(y_val_actual) 
+
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model2 = Sequential()
@@ -302,6 +325,10 @@ print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m1 = 1 - (pow(history.min_loss, 0.5)/np.mean(y_val_1))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_1) 
 
+"""
+plot_history(history)
+"""
+
 #get the best epoch and re run training on entire data
 model1 = Sequential()
 model1.add(Dense(1, input_dim=x_1.shape[1], activation='linear'))
@@ -336,6 +363,10 @@ model2.fit(x_2, y_2, nb_epoch=500, batch_size=batch_size, validation_data=(x_val
 print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m2 =  1 - (pow(history.min_loss, 0.5)/np.mean(y_val_2))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_2) 
+
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model2 = Sequential()
@@ -459,6 +490,9 @@ print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m1 = 1 -  (pow(history.min_loss, 0.5)/np.mean(y_val_1))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_1) 
 
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model1 = Sequential()
@@ -501,6 +535,9 @@ print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m2 = 1 - (pow(history.min_loss, 0.5)/np.mean(y_val_2))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_2) 
 
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model2 = Sequential()
@@ -561,6 +598,9 @@ print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m1 = 1 - (pow(history.min_loss, 0.5)/np.mean(y_val_1))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_1) 
 
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model1 = Sequential()
@@ -602,6 +642,9 @@ print "Minimum validation loss is - mean square error: ", history.min_loss
 w_m2 = 1 - (pow(history.min_loss, 0.5)/np.mean(y_val_2))
 print "RMSE percent of mean of output: ", pow(history.min_loss, 0.5)*100/np.mean(y_val_2) 
 
+"""
+plot_history(history)
+"""
 
 #get the best epoch and re run training on entire data
 model2 = Sequential()
