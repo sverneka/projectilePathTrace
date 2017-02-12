@@ -404,8 +404,6 @@ result_log.to_csv('result_lin_reg_log.csv',index=False)
 ############################################################################################################### LSTM ##############################################################################################################
 
 import matplotlib.pyplot as plt
-import pandas
-import math
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
